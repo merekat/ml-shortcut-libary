@@ -1,7 +1,7 @@
 ![Header Image](images/header.png)
 
 # ML Shortcut Libary
-A Visual Studio Code shortcut libary designed to simplify and accelerate machine learning development.
+A Visual Studio Code shortcut libary designed to simplify and accelerate machine learning development in python.
 
 #### Why Use ML Shortcuts?
 ML Shortcuts helps streamline your machine learning workflow by providing quick access to commonly used code snippets and tools, making your development process more efficient and productive. 
