@@ -1,3 +1,5 @@
+![Header Image](images/header.png)
+
 # ML Shortcut Libary
 A Visual Studio Code shortcut libary designed to simplify and accelerate machine learning development.
 
