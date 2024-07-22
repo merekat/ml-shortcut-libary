@@ -14,3 +14,13 @@ ML Shortcuts helps streamline your machine learning workflow by providing quick 
   * Inline model performance metrics
 
 ## Installation
+
+Copy and paste the content of python.json to the user snippet JSON file of Visual Code Studio. 
+
+![Header Image](images/installation.gif)
+
+To use the snippets of the libary just start typing the prefixes of the snippets and accept them via autocomplete. 
+
+![Header Image](images/implementation.gif)
+
+All prefixes and codes can be customized in the user snippet JSON file. 
