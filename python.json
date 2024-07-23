@@ -16,6 +16,16 @@
         ],
         "description": "Import Basic Libaries"
     },
+    "Import Database Libaries": {
+        "prefix": "import_dabase",
+        "body": [
+            "# Import of database packages",
+            "import os",
+            "from dotenv import load_dotenv",
+            "from sqlalchemy import create_engine"
+        ],
+        "description": "Import of Database Libaries"
+    },
     "Import Chart Libaries": {
         "prefix": "import_charts",
         "body": [
@@ -40,9 +50,33 @@
             "from tensorflow.keras import layers",
             "from tensorflow.keras.layers.experimental import preprocessing",
             "from tensorflow.keras.utils import to_categorical",
-            "from tensorflow.keras.preprocessing import image"
+            "from tensorflow.keras.preprocessing import image",
+            "from sklearn.decomposition import PCA",
+            "from sklearn.manifold import TSNE"
         ],
-        "description": "Import preprossesor Libaries"
+        "description": "Import Preprossesor Libaries"
+    },
+    "Import Clustering Libaries": {
+        "prefix": "import_cluster",
+        "body": [
+            "# Import of cluster packages",
+            "from sklearn.cluster import DBSCAN, MiniBatchKMeans, KMeans, AgglomerativeClustering",
+            "import scipy.cluster.hierarchy as sch",
+            "from sklearn.neighbors import NearestNeighbors",
+            "import nltk",
+            "from nltk.corpus import stopwords",
+            "from nltk.cluster import KMeansClusterer",
+        ],
+        "description": "Import Cluster Libaries"
+    },
+    "Import Satelite Imagery Libaries": {
+        "prefix": "import_cluster",
+        "body": [
+            "# Import of satelite imagery packages",
+            "import rasterio as rio",
+            "from rasterio.plot import show"
+        ],
+        "description": "Import Satelite Imagery Libaries"
     },
     "Import Time Series Libaries": {
         "prefix": "import_timeseries",
@@ -134,16 +168,6 @@
             "from statsmodels.tsa.stattools import adfuller, kpss"
         ],
         "description": "Import of Metrics Libaries"
-    },
-    "Import Database Libaries": {
-        "prefix": "import_dabase",
-        "body": [
-            "# Import of database packages",
-            "import os",
-            "from dotenv import load_dotenv",
-            "from sqlalchemy import create_engine"
-        ],
-        "description": "Import of Database Libaries"
     },
     // RANDOM
     "Random DF": {
@@ -287,18 +311,20 @@
     "EDA Info & Describe": {
         "prefix": "eda_info",
         "body": [
-            "# EDA info & describe",
+            "# EDA info & describe with NaN share",
             "info = pd.concat([",
-            "df.dtypes.to_frame().T,",
-            "df.mean(numeric_only=True).to_frame().T,",
-            "df.std(numeric_only=True).to_frame().T,",
-            "df.min(numeric_only=True).to_frame().T,",
-            "df.quantile(0.25, numeric_only=True).to_frame().T,",
-            "df.quantile(0.5, numeric_only=True).to_frame().T, ",
-            "df.quantile(0.75, numeric_only=True).to_frame().T,",
-            "df.max(numeric_only=True).to_frame().T,], ignore_index=True).applymap(lambda x: round(x, 1) if isinstance(x, (int, float)) else x)",
+            "    df.dtypes.to_frame().T,",
+            "    df.isnull().mean().to_frame().T,",
+            "    df.mean(numeric_only=True).to_frame().T,",
+            "    df.std(numeric_only=True).to_frame().T,",
+            "    df.min(numeric_only=True).to_frame().T,",
+            "    df.quantile(0.25, numeric_only=True).to_frame().T,",
+            "    df.quantile(0.5, numeric_only=True).to_frame().T,",
+            "    df.quantile(0.75, numeric_only=True).to_frame().T,",
+            "    df.max(numeric_only=True).to_frame().T,",
+            "], ignore_index=True).applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)",
             "",
-            "info.insert(0, 'statistic', ['dtype', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'])",
+            "info.insert(0, 'statistic', ['Stype', 'NaNs', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max'])",
             "info"
         ],
         "description": "EDA Info & Describe"
@@ -482,6 +508,16 @@
         ],
         "description": "Preprocess Image"
     },
+    // DIMENSION REDUCTION
+    "t-Distributed Stochastic Neighbor Embedding": {
+        "prefix": "image_preprocess",
+        "body": [
+            "# Initialize t-SNE to ${1:number} dimensions",
+            "tsne = TSNE(n_components=${1:number}, init='random', random_state=RSEED)",
+            "digits_proj = tsne.fit_transform(digits.data)"
+        ],
+        "description": "TSNE"
+    },
     // PLOTTING
     "Histogram Matplot": {
         "prefix": "histogram_plt",
@@ -622,6 +658,19 @@
         ],
         "description": "Roc Curve Plot Matplot"
     },
+    "Cluster Center Kmeans": {
+        "prefix": "cluster_center_plt",
+        "body": [
+            "# Plot the cluster centers",
+            "fig, ax = plt.subplots(2, 5, figsize=(8, 3))",
+            "centers = kmeans.cluster_centers_.reshape(10, 8, 8)",
+            "for axi, center in zip(ax.flat, centers):",
+            "    axi.set(xticks=[], yticks=[])",
+            "    axi.imshow(center, interpolation='nearest', cmap=plt.cm.binary)",
+            "plt.show();"
+        ],
+        "description": "Cluster Center Kmeans"
+    },
     // SPLIT
     "Split Train-Test": {
         "prefix": "split_train-test",
@@ -756,6 +805,69 @@
             "get_predictions_score(pred)"
         ],
         "description": "Zero-Shot Classifier"
+    },
+    // CLUSTERING
+    "Kmeans": {
+        "prefix": "kmeans_clustering",
+        "body": [
+            "# Creating the KMeans model and predict digits",
+            "cluster = KMeans(n_clusters=10, random_state=RSEED)",
+            "cluster.fit_predict(df)"
+        ],
+        "description": "Kmeans"
+    },
+    "DBSCAN": {
+        "prefix": "dbscan_clustering",
+        "body": [
+            "# Creating the DBSCAN model and predict digits",
+            "cluster = DBSCAN(eps=5, min_samples=15)",
+            "cluster.fit_predict(df)"
+        ],
+        "description": "DBSCAN"
+    },
+    "Agglomerative Clustering": {
+        "prefix": "dbscan_clustering",
+        "body": [
+            "# Creating the AgglomerativeClustering model and predict digits",
+            "cluster = AgglomerativeClustering(n_clusters=2, linkage='ward')",
+            "cluster.fit(X_pca)"
+        ],
+        "description": "Agglomerative Clustering"
+    },
+    "Mini Batch KMeans": {
+        "prefix": "mini_batch_kmeans_clustering",
+        "body": [
+            "# Creating the MiniBatchKMeans model and predict digits",
+            "cluster = MiniBatchKMeans(n_clusters=2, verbose=0, max_iter=150, n_init=20, random_state=0)",
+            "cluster.fit(df)"
+        ],
+        "description": "Mini Batch KMeans"
+    },
+    "Evaluate Cluster Function": {
+        "prefix": "def_evaluate_cluster",
+        "body": [
+            "# Testing a clustering algorithm",
+            "def plot_clusters(data, algorithm, kwds):",
+            "    # cluster the data while taking the time the process needs",
+            "    start_time = time.time()",
+            "    labels = algorithm(**kwds).fit_predict(data)",
+            "    end_time = time.time()",
+            "",
+            "    # defining the colors for visual representation",
+            "    palette = sns.color_palette('bright', np.unique(labels).max() + 1)",
+            "    colors = [palette[x] if x >= 0 else (0.0, 0.0, 0.0) for x in labels]",
+            "",
+            "    # plotting the data, removing the axis and adding title and time",
+            "    plt.scatter(data.T[0], data.T[1], c=colors, **plot_kwds)",
+            "    frame = plt.gca()",
+            "    frame.axes.get_xaxis().set_visible(False)",
+            "    frame.axes.get_yaxis().set_visible(False)",
+            "    plt.title('Clusters found by {}'.format(str(algorithm.__name__)), fontsize=24)",
+            "    plt.text(-0.5, 0.7, 'Clustering took {:.2f} s'.format(end_time - start_time), fontsize=14)",
+            "",
+            "plot_clusters(df, ${1:algorithm}, {${2:kwds}})"
+        ],
+        "description": "Evaluate Cluster Function"
     },
     // REGRESSION
     "Linear Regression Model": {
@@ -1454,7 +1566,7 @@
         ],
         "description": "Augmented Dickey-Fuller"
     },
-    "Evaluate Modul Function": {
+    "Evaluate Model Function": {
         "prefix": "def_evaluate_model",
         "body": [
             "# Make probability predictions",
@@ -1503,7 +1615,7 @@
             "",
             "evaluate_model(y_pred_test, prob_test, y_pred_train, prob_train)"
         ],
-        "description": "Evaluate Modul Function"
+        "description": "Evaluate Model Function"
     },
     // MAIN
     "Calling Main": {
